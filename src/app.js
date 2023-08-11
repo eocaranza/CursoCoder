@@ -3,7 +3,6 @@ import { productsRouter } from "./routes/products.routes.js";
 import { cartsRouter } from "./routes/carts.routes.js";
 import { viewsRouter } from "./routes/views.routes.js";
 import { config } from "./config/config.js";
-import { connectDB } from "./config/dbConnection.js";
 import { engine } from 'express-handlebars';
 import { __dirname } from "./utils.js";
 import path from 'path';
@@ -49,9 +48,6 @@ socketServer.on("connection",(socket)=>{
         socketServer.emit("messageHistory", messages);
     })
 });
-
-//conexion a la DB
-connectDB();
 
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);

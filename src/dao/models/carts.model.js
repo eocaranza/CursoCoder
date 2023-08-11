@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-
-// nombre de la coleccion de carts
-const cartsCollection = "carts";
+import { cartsCollection } from "../../constants/index.js";
+import mongoosePaginate from "mongoose-paginate-v2";
 
 // esquema de carts
 const cartSchema = new mongoose.Schema({
@@ -19,5 +18,6 @@ const cartSchema = new mongoose.Schema({
         required: true
     }
 });
+cartSchema.plugin(mongoosePaginate);
 
 export const cartsModel = mongoose.model(cartsCollection, cartSchema);

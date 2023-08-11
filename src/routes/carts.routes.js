@@ -1,11 +1,7 @@
 import {Router} from "express";
-import {CartManager} from "../dao/managers/fileSystem/CartManager.js";
-import { CartsMongo } from "../dao/managers/mongo/cartsMongo.js";
+import { cartService } from "../dao/index.js";
 
-const fileCart = "./src/files/carritos.json";
-
-//const cartManager = new CartManager(fileCart);
-const cartManager = new CartsMongo();
+const cartManager = cartService;
 
 const router = Router();
 

@@ -55,7 +55,17 @@ export class CartsMongo{
             const product = await this.productModel.findById(idProducto);
             if(!product)
                 return "No existe el producto"
-            cart.products.push(idProducto);
+
+            // Buscar si el producto ya está en el carrito
+            const existingProduct = cart.products.find(prod => prod.product === idProducto);
+            
+            if (existingProduct) {
+                existingProduct.quantity++; // Incrementar la cantidad
+            } else {
+                cart.products.push({ product: idProducto, quantity: 1 }); // Agregar el producto con cantidad 1
+            }
+
+            // Guardar el carrito actualizado
             cart.save();
             return true;
         }catch(error){

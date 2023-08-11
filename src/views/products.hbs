@@ -1,0 +1,19 @@
+<p><strong>{{error}}</strong></p>
+
+{{#if payload}}
+    <h1>Listado de Productos</h1>
+    <ul>
+    {{#each payload}}
+        <li>Nombre: {{this.name}} - Precio: {{this.price}}</li>
+    {{/each}}
+    </ul>
+    {{#if hasPrevPage}}
+        <a href={{prevLink}}>Anterior</a>
+    {{/if}}
+    {{page}}
+    {{#if hasNextPage}}
+        <a href={{nextLink}}>Siguiente</a>
+    {{/if}}
+{{else}}
+    <h2>No hay productos</h2>
+{{/if}}
