@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {productService} from '../dao/index.js'
+import { cartService } from "../dao/index.js";
 
 const router = Router();
 
@@ -7,10 +8,16 @@ router.get("/", async (req,res) => {
     res.render("home");
 });
 
+router.get("/carts/:cid", async (req,res) => {
+    const result = await cartService.getCartById(req.params.cid);
+    res.render("carts", result);
+});
+
 router.get("/products/:pid", async (req,res) => {
     const result = await productService.getProductById(req.params.pid);
     res.render("detail", result);
 });
+
 router.get("/products", async (req,res) => {
     try {
         //capturar valores de queries

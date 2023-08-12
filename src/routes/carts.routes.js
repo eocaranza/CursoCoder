@@ -32,8 +32,8 @@ router.get("/:cid",async (req,res)=>{
 
 router.post("/",async (req,res)=>{
     const recibido = await cartManager.addCart(req.body);
-    if(recibido === true)
-        res.json({status: "success", message: "Carrito agregado"});
+    if(recibido._id)
+        res.json({status: "success", message: recibido});
     else
         res.json({status: "error", message: recibido});
 });

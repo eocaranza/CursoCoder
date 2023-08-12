@@ -1,5 +1,6 @@
 import { cartsModel } from "../../models/carts.model.js";
 import { productsModel } from "../../models/products.model.js";
+import { productsCollection } from "../../../constants/index.js";
 
 export class CartsMongo{
     constructor(){
@@ -28,8 +29,8 @@ export class CartsMongo{
                 if(!encontrado)
                     throw new Error("Uno de los productos no existe"); 
             });
-            await this.model.create(cartInfo);
-            return true;
+            const cart = await this.model.create(cartInfo);
+            return cart;
         }catch(error){
             return error.message;
         }
@@ -38,7 +39,7 @@ export class CartsMongo{
     //get cart by id
     async getCartById(id){
         try{
-            const cart = await this.model.findById(id);
+            const cart = await this.model.findById(id).populate(productsCollection).lean();
             return cart;
         }catch(error){
             console.log(error.message);

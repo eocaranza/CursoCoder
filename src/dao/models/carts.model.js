@@ -1,14 +1,15 @@
 import mongoose from "mongoose";
 import { cartsCollection } from "../../constants/index.js";
+import { productsCollection } from "../../constants/index.js";
 import mongoosePaginate from "mongoose-paginate-v2";
 
 // esquema de carts
 const cartSchema = new mongoose.Schema({
     products:{
         type: [{
-            id:{
+            _id:{
             type: mongoose.Schema.Types.ObjectId,
-            ref: "products"
+            ref: productsCollection
             },
             quantity:{
                 type: Number,
