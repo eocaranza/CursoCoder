@@ -1,6 +1,7 @@
 import { cartsModel } from "../../models/carts.model.js";
 import { productsModel } from "../../models/products.model.js";
 import { productsCollection } from "../../../constants/index.js";
+import mongoose from "mongoose";
 
 export class CartsMongo{
     constructor(){
@@ -66,6 +67,85 @@ export class CartsMongo{
                 cart.products.push({ product: idProducto, quantity: 1 }); // Agregar el producto con cantidad 1
             }
 
+            // Guardar el carrito actualizado
+            cart.save();
+            return true;
+        }catch(error){
+            return error.message;
+        }
+    }
+
+    //borrar producto del carrito
+    async deleteProduct(idCarrito, idProducto){
+        try{
+            const cart = await this.model.findById(idCarrito);
+            if(!cart)
+                return "No existe el carrito"
+            const product = await this.productModel.findById(idProducto);
+            if(!product)
+                return "No existe el producto"
+
+            // quitar el producto en el carrito
+            const index = cart.products.findIndex((prod) => prod._id.toString() == idProducto);
+            cart.products.splice(index,1);
+            // Guardar el carrito actualizado
+            cart.save();
+            return true;
+        }catch(error){
+            return error.message;
+        }
+    }
+
+    //borrar todos los productos del carrito
+    async deleteProducts(idCarrito){
+        try{
+            const cart = await this.model.findById(idCarrito);
+            if(!cart)
+                return "No existe el carrito"
+
+            // quitar productos del carrito
+            cart.products.splice(0,cart.products.length);
+            // Guardar el carrito actualizado
+            cart.save();
+            return true;
+        }catch(error){
+            return error.message;
+        }
+    }
+
+    //add products to cart
+    async editCart(idCarrito, prodInfo){
+        try{
+            const cart = await this.model.findById(idCarrito);
+            if(!cart)
+                return "No existe el carrito"
+
+            cart.products.splice(0,cart.products.length);
+
+            prodInfo.forEach(prod =>{
+                cart.products.push(prod);
+            });
+            // Guardar el carrito actualizado
+            cart.save();
+            return true;
+        }catch(error){
+            return error.message;
+        }
+    }
+
+    //modificar producto del carrito
+    async editQuantity(idCarrito, idProducto, prodInfo){
+        try{
+            const cart = await this.model.findById(idCarrito);
+            if(!cart)
+                return "No existe el carrito"
+            const product = await this.productModel.findById(idProducto);
+            if(!product)
+                return "No existe el producto"
+
+            // quitar el producto en el carrito
+            const index = cart.products.findIndex((prod) => prod._id.toString() == idProducto);
+            cart.products[index].quantity = prodInfo.quantity;
             // Guardar el carrito actualizado
             cart.save();
             return true;
