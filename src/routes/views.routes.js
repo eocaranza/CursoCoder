@@ -7,12 +7,19 @@ router.get("/", async (req,res) => {
     res.render("home");
 });
 
+router.get("/products/:pid", async (req,res) => {
+    const result = await productService.getProductById(req.params.pid);
+    res.render("detail", result);
+});
 router.get("/products", async (req,res) => {
     try {
         //capturar valores de queries
-        const {limit=10, page=1, stock, sort="asc"} = req.query;
+        const {limit=10, page=1, stock, sort="asc", name, price, category} = req.query;
 
         const stockValue = stock === 0? undefined : parseInt(stock);
+        const nameValue = name === ""? undefined : name;
+        const priceValue = price === 0? undefined : parseFloat(price);
+        const categoryValue = category === 0? undefined : category;
 
         const sortValue = sort === "asc"? 1:-1;
         if(!["asc","desc"].includes(sort))
@@ -20,8 +27,18 @@ router.get("/products", async (req,res) => {
 
         let query = {}
         if(stockValue){
-            query = {stock: {$gte:stockValue}};
+            query.stock = {$gte:stockValue};
         }
+        if(nameValue){
+            query.name= {$eq:nameValue};
+        }
+        if(price){
+            query.price= {$gte:priceValue};
+        }
+        if(category){
+            query.category= {$eq:categoryValue};
+        }
+
         const result = await productService.getProductsWithPaginate(query,
         {
             page,
