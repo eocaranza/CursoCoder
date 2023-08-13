@@ -30,6 +30,9 @@ export class ProductsMongo{
     //save product
     async addProduct(productInfo){
         try{
+            const duplicado = await this.model.findOne({code: productInfo.code}).exec();
+            if(duplicado)
+                return "Ya existe un producto con ese codigo"
             await this.model.create(productInfo);
             return true;
         }catch(error){

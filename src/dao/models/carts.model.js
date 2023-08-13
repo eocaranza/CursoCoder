@@ -7,16 +7,17 @@ import mongoosePaginate from "mongoose-paginate-v2";
 const cartSchema = new mongoose.Schema({
     products:{
         type: [{
-            _id:{
+            product:{
             type: mongoose.Schema.Types.ObjectId,
-            ref: productsCollection
+            ref: productsCollection,
+            required: true
             },
             quantity:{
                 type: Number,
-                default: 1
+                default: 1,
+                required: true
             }
         }],
-        required: true
     }
 });
 cartSchema.plugin(mongoosePaginate);

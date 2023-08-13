@@ -12,7 +12,7 @@ export class CartsMongo{
     //get carts
     async getCarts(){
         try{
-            const carts = await this.model.find();
+            const carts = await this.model.find().populate('products._id');
             return carts;
         }catch(error){
             console.log(error.message);
@@ -40,7 +40,7 @@ export class CartsMongo{
     //get cart by id
     async getCartById(id){
         try{
-            const cart = await this.model.findById(id).populate(productsCollection).lean();
+            const cart = await this.model.findById(id).populate('products.product');
             return cart;
         }catch(error){
             console.log(error.message);
