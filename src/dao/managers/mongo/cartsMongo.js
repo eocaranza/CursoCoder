@@ -1,7 +1,6 @@
 import { cartsModel } from "../../models/carts.model.js";
 import { productsModel } from "../../models/products.model.js";
 import { productsCollection } from "../../../constants/index.js";
-import mongoose from "mongoose";
 
 export class CartsMongo{
     constructor(){
@@ -26,7 +25,7 @@ export class CartsMongo{
             if(!cartInfo.products)
                 return "Debe crearse con productos";
             cartInfo.products.forEach(async prod =>{
-                const encontrado = await this.productModel.findById(prod._id);
+                const encontrado = await this.productModel.findById(prod.product);
                 if(!encontrado)
                     throw new Error("Uno de los productos no existe"); 
             });
@@ -40,8 +39,8 @@ export class CartsMongo{
     //get cart by id
     async getCartById(id){
         try{
-            const cart = await this.model.findById(id).populate('products.product');
-            return cart.products;
+            const cart = await this.model.findById(id).populate('products.product').lean();
+            return cart;
         }catch(error){
             console.log(error.message);
             throw new Error("Error al obtener el carrito");
@@ -86,7 +85,7 @@ export class CartsMongo{
                 return "No existe el producto"
 
             // quitar el producto en el carrito
-            const index = cart.products.findIndex((prod) => prod._id.toString() == idProducto);
+            const index = cart.products.findIndex((prod) => prod.product.toString() == idProducto);
             cart.products.splice(index,1);
             // Guardar el carrito actualizado
             cart.save();
@@ -122,9 +121,18 @@ export class CartsMongo{
 
             cart.products.splice(0,cart.products.length);
 
-            prodInfo.forEach(prod =>{
-                cart.products.push(prod);
-            });
+            if(prodInfo.products){
+                prodInfo.products.forEach(prod =>{
+                    console.log(prod);
+                    cart.products.push(prod);
+                });
+            }
+            else{
+                prodInfo.forEach(prod =>{
+                    console.log(prod);
+                    cart.products.push(prod);
+                });
+            }
             // Guardar el carrito actualizado
             cart.save();
             return true;
@@ -144,7 +152,7 @@ export class CartsMongo{
                 return "No existe el producto"
 
             // quitar el producto en el carrito
-            const index = cart.products.findIndex((prod) => prod._id.toString() == idProducto);
+            const index = cart.products.findIndex((prod) => prod.product.toString() == idProducto);
             cart.products[index].quantity = prodInfo.quantity;
             // Guardar el carrito actualizado
             cart.save();
