@@ -12,7 +12,7 @@ export class CartsMongo{
     //get carts
     async getCarts(){
         try{
-            const carts = await this.model.find().populate('products._id');
+            const carts = await this.model.find().populate('products.product');
             return carts;
         }catch(error){
             console.log(error.message);
@@ -41,7 +41,7 @@ export class CartsMongo{
     async getCartById(id){
         try{
             const cart = await this.model.findById(id).populate('products.product');
-            return cart;
+            return cart.products;
         }catch(error){
             console.log(error.message);
             throw new Error("Error al obtener el carrito");

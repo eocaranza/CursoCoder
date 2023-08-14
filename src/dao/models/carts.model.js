@@ -5,8 +5,8 @@ import mongoosePaginate from "mongoose-paginate-v2";
 
 // esquema de carts
 const cartSchema = new mongoose.Schema({
-    products:{
-        type: [{
+    products:
+        [{
             product:{
             type: mongoose.Schema.Types.ObjectId,
             ref: productsCollection,
@@ -18,7 +18,6 @@ const cartSchema = new mongoose.Schema({
                 required: true
             }
         }],
-    }
 });
 cartSchema.plugin(mongoosePaginate);
 
