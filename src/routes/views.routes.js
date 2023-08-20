@@ -8,6 +8,10 @@ router.get("/", async (req,res) => {
     res.render("home");
 });
 
+router.get("/registro", async (req,res) => {
+    res.render("signup");
+});
+
 router.get("/login", async (req,res) => {
     res.render("login");
 });

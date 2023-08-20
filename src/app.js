@@ -8,7 +8,7 @@ import { __dirname } from "./utils.js";
 import path from 'path';
 import { Server } from "socket.io";
 import { chatModel } from "./dao/models/chat.model.js";
-import { loginRouter } from "./routes/login.routes.js";
+import { sessionRouter } from "./routes/session.routes.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 
@@ -24,9 +24,9 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.use(session({
     store:MongoStore.create({
         ttl:40,
-        mongoUrl:"mongodb+srv://Eduardo:8OlSRq8ep7hp7ueX@backendcoder.1qacdwm.mongodb.net/sessionsDB?retryWrites=true&w=majority"
+        mongoUrl: config.mongo.url
     }),
-    secret:"sessionSecretKey",
+    secret: config.server.secretSession,
     resave: true,
     saveUninitialized: true
 }));
@@ -63,5 +63,5 @@ socketServer.on("connection",(socket)=>{
 
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
+app.use("/api/sessions",sessionRouter);
 app.use(viewsRouter);
-app.use(loginRouter);
