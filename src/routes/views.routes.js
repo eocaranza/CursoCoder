@@ -8,6 +8,10 @@ router.get("/", async (req,res) => {
     res.render("home");
 });
 
+router.get("/login", async (req,res) => {
+    res.render("login");
+});
+
 router.get("/carts/:cid", async (req,res) => {
     const result = await cartService.getCartById(req.params.cid);
     res.render("carts", result);

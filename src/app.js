@@ -8,6 +8,9 @@ import { __dirname } from "./utils.js";
 import path from 'path';
 import { Server } from "socket.io";
 import { chatModel } from "./dao/models/chat.model.js";
+import { loginRouter } from "./routes/login.routes.js";
+import session from "express-session";
+import MongoStore from "connect-mongo";
 
 const port = config.server.port;
 
@@ -18,6 +21,15 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname, "/public")));
+app.use(session({
+    store:MongoStore.create({
+        ttl:40,
+        mongoUrl:"mongodb+srv://Eduardo:8OlSRq8ep7hp7ueX@backendcoder.1qacdwm.mongodb.net/sessionsDB?retryWrites=true&w=majority"
+    }),
+    secret:"sessionSecretKey",
+    resave: true,
+    saveUninitialized: true
+}));
 
 //levantar el servidor
 const httpServer = app.listen(port,()=>console.log(`El servidor esta escuchando en el puerto ${port}`));
@@ -52,3 +64,4 @@ socketServer.on("connection",(socket)=>{
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use(viewsRouter);
+app.use(loginRouter);
