@@ -6,14 +6,17 @@ const router = Router();
 router.post("/login", async (req,res)=>{
     try {
         const loginInfo = req.body;
+        const rol = (loginInfo.email == "adminCoder@coder.com")?
+        "Administrador" : "Usuario";
         const user = await userService.getUserByEmail(loginInfo.email);
-        if(!user)
+        if(!user && rol == "Usuario")
             return res.render("login",{error: "El usuario no se registró"});
 
-        if(user.password == loginInfo.password){
+        if(user?.password == loginInfo.password || (loginInfo.password == "adminCod3r123" && rol == "Administrador")){
             req.session.userInfo = {
-                first_name: user.first_name,
-                email: user.email
+                first_name: user?.first_name ? user.first_name : "AdminCoder",
+                email: user?.email ? user.email : loginInfo.email,
+                role: rol
             }
             res.redirect("/products");
         }
@@ -37,11 +40,11 @@ router.post("/signup", async (req,res)=>{
     }
 });
 
-router.post("/logout", async (req,res)=>{
-    const loginInfo = req.body;
-    req.session.email = loginInfo.email;
-    console.log(req.session);
-    res.send("Login exitoso");
+router.get("/logout", async (req,res)=>{
+    req.session.destroy(error => {
+        if(error) return res.redirect("/products");
+        else return res.redirect("/");
+    });
 });
 
 export {router as sessionRouter};

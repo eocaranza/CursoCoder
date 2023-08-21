@@ -1,9 +1,10 @@
 <p><strong>{{error}}</strong></p>
+<p>Bienvenido {{user.role}} {{user.first_name}}</p>
 
-{{#if payload}}
+{{#if required.payload}}
     <h1>Listado de Productos</h1>
     <ul>
-    {{#each payload}}
+    {{#each required.payload}}
         <li><a href="products/{{this._id}}"> {{this.name}}</a></li>
         <button onclick="addToCart('{{this._id}}')">Agregar al carrito</button>
     {{/each}}
@@ -18,5 +19,7 @@
 {{else}}
     <h2>No hay productos</h2>
 {{/if}}
+<br/><br/>
+<a href="/api/sessions/logout">Cerrar sesión</a>
 
 <script src="/js/products.js"></script>

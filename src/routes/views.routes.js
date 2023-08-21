@@ -1,18 +1,19 @@
 import { Router } from "express";
 import {productService} from '../dao/index.js'
 import { cartService } from "../dao/index.js";
+import { checkUserAuthenticated, showLoginView } from "../middlewares/auth.js";
 
 const router = Router();
 
-router.get("/", async (req,res) => {
+router.get("/", checkUserAuthenticated, async (req,res) => {
     res.render("home");
 });
 
-router.get("/registro", async (req,res) => {
+router.get("/registro", showLoginView, async (req,res) => {
     res.render("signup");
 });
 
-router.get("/login", async (req,res) => {
+router.get("/login", showLoginView, async (req,res) => {
     res.render("login");
 });
 
@@ -26,7 +27,7 @@ router.get("/products/:pid", async (req,res) => {
     res.render("detail", result);
 });
 
-router.get("/products", async (req,res) => {
+router.get("/products", checkUserAuthenticated, async (req,res) => {
     try {
         //capturar valores de queries
         const {limit=10, page=1, stock, sort="asc", name, price, category} = req.query;
@@ -88,7 +89,7 @@ router.get("/products", async (req,res) => {
             prevLink: result.hasPrevPage ? `${pLink}` : null,
             nextLink: result.hasNextPage ? `${nLink}` : null
         };
-        res.render("products", required);
+        res.render("products", {required: required, user: req.session.userInfo});
     } catch (error) {
         console.log(error);
         res.render("products",{error: "Error al cargar la vista"});

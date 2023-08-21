@@ -8,15 +8,16 @@ const router = Router();
 //definimos las rutas
 
 router.get("/",async (req,res)=>{
-    const limit = req.query.limit;
-    const recibidos = await prodManager.getProducts();
-    if(limit)
-    {
-        const filtrados = recibidos.splice(0,limit);
-        res.json({status: "success", data: filtrados});
-    }
-    else
-        res.json({status: "success", data: recibidos});
+        const limit = req.query.limit;
+        const recibidos = await prodManager.getProducts();
+        
+        if(limit)
+        {
+            const filtrados = recibidos.splice(0,limit);
+            res.json({status: "success", data: filtrados, user : req.session.userInfo});
+        }
+        else
+            res.json({status: "success", data: recibidos, user : req.session.userInfo});
 });
 
 router.get("/:pid",async (req,res)=>{
