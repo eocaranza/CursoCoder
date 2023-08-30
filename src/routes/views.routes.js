@@ -89,7 +89,10 @@ router.get("/products", checkUserAuthenticated, async (req,res) => {
             prevLink: result.hasPrevPage ? `${pLink}` : null,
             nextLink: result.hasNextPage ? `${nLink}` : null
         };
-        res.render("products", {required: required, user: req.session.userInfo});
+        if(req.session?.userInfo)
+            res.render("products", {required: required, user: req.session.userInfo});
+        else
+            res.render("products", {required: required, user: req.user});
     } catch (error) {
         console.log(error);
         res.render("products",{error: "Error al cargar la vista"});
