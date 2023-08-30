@@ -11,6 +11,8 @@ import { chatModel } from "./dao/models/chat.model.js";
 import { sessionRouter } from "./routes/session.routes.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import passport from "passport";
+import {initializePassport} from "./config/passportConfig.js";
 
 const port = config.server.port;
 
@@ -21,6 +23,8 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(express.static(path.join(__dirname, "/public")));
+
+//configuracion de sesiones
 app.use(session({
     store:MongoStore.create({
         ttl:40,
@@ -38,6 +42,11 @@ const httpServer = app.listen(port,()=>console.log(`El servidor esta escuchando 
 app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 app.set('views', path.join(__dirname, "/views"));
+
+//configuración de passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
 
 //crear server websocket
 const socketServer = new Server(httpServer);

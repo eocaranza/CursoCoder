@@ -5,5 +5,10 @@ export const config = {
     },
     mongo:{
         url:"mongodb+srv://Eduardo:8OlSRq8ep7hp7ueX@backendcoder.1qacdwm.mongodb.net/ecommerce?retryWrites=true&w=majority"
+    },
+    github:{
+        clientId: "Iv1.81c3950ebb2543c0",
+        secretId: "929be2ef875aec4816e603fe301afd98fdae5a0d",
+        callbackUrl: "http://localhost:8080/api/sessions/github-callback"
     }
 }
