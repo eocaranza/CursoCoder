@@ -74,9 +74,9 @@ export const initializePassport = () =>{
                     return done(null, false);
                 }
 
-                const rol = (username == "adminCoder@coder.com")? "Administrador" : "Usuario";
+                const rol = (username == "adminCoder@coder.com")? "admin" : "user";
 
-                if(isValidPassword(user, password) || (password == "adminCod3r123" && rol == "Administrador")){
+                if(isValidPassword(user, password) || (password == "adminCod3r123" && rol == "admin")){
                     return done(null, user);
                 }
                 else{

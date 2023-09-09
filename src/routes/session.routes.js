@@ -2,6 +2,7 @@ import { Router, application } from "express";
 import { userService } from "../dao/index.js";
 import { createHash, isValidPassword } from "../utils.js";
 import passport from "passport";
+import { checkUserAuthenticated } from "../middlewares/auth.js";
 
 const router = Router();
 
@@ -38,6 +39,13 @@ router.get("/github-callback", passport.authenticate("githubLoginStrategy",{
     failureRedirect: "/api/sessions/signup"
 }), (req, res) => {
     res.redirect("/products");
+});
+
+router.get("/current", async (req,res)=>{
+    if(req.user)
+            res.render("current", {user: req.user.toJSON()});
+        else
+            res.render("current", {error: "No se encuentra loggeado"});
 });
 
 export {router as sessionRouter};
