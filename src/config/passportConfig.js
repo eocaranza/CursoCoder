@@ -7,6 +7,7 @@ import { config } from "./config.js";
 
 const userService = UsersService;
 
+
 export const initializePassport = () =>{
     passport.use("githubLoginStrategy", new githubStratregy(
     {
@@ -16,7 +17,6 @@ export const initializePassport = () =>{
     },
     async(accesstoken, refreshtoken, profile, done) => {
         try {
-            //console.log(profile);
             //verificar registro en la app
             const user = await userService.getUserByEmail(profile.username);
 
