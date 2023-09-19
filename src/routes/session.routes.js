@@ -1,6 +1,7 @@
 import { Router} from "express";
 import { SessionsController } from "../controllers/sessions.controllers.js";
 import passport from "passport";
+import { checkUserAuthenticated } from "../middlewares/auth.js";
 
 const router = Router();
 
@@ -23,5 +24,12 @@ router.get("/github-callback", passport.authenticate("githubLoginStrategy",{
 router.post("/signup", passport.authenticate("signupStrategy",{
     failureRedirect: "/api/sessions/fail-signup"
 }), SessionsController.signup);
+
+router.get("/current", async (req,res)=>{
+    if(req.user)
+            res.render("current", {user: req.user.toJSON()});
+        else
+            res.render("current", {error: "No se encuentra loggeado"});
+});
 
 export {router as sessionRouter};
