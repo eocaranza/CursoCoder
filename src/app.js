@@ -15,7 +15,6 @@ import passport from "passport";
 import {initializePassport} from "./config/passportConfig.js";
 
 const port = config.server.port;
-
 //creamos la aplicacion del servidor
 const app = express();
 

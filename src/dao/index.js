@@ -7,10 +7,10 @@ import {connectDB} from '../config/dbConnection.js'
 import { usersMongo } from './managers/mongo/usersMongo.js';
 
 connectDB();
-const productService = new ProductsMongo();
-const cartService = new CartsMongo();
-const userService = new usersMongo();
+const productDao = new ProductsMongo();
+const cartDao = new CartsMongo();
+const userDao = new usersMongo();
 
-export {productService}
-export {cartService}
-export {userService};
+export {productDao}
+export {cartDao}
+export {userDao};

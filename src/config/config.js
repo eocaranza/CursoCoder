@@ -1,3 +1,23 @@
+import dotenv from "dotenv";
+import { __dirname } from "../utils.js";
+dotenv.config();
+
+export const config = {
+    server:{
+        port: process.env.PORT,
+        secretSession: process.env.SECRET_SESSION
+    },
+    mongo:{
+        url: process.env.MONGO_URL
+    },
+    github:{
+        clientId: process.env.GITCLIENT,
+        secretId: process.env.GITSECRET,
+        callbackUrl: process.env.GITCALLBACK
+    }
+}
+
+/*
 export const config = {
     server:{
         port: 8080,
@@ -12,3 +32,4 @@ export const config = {
         callbackUrl: "http://localhost:8080/api/sessions/github-callback"
     }
 }
+*/

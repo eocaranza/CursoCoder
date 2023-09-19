@@ -1,9 +1,11 @@
 import passport from "passport";
 import { createHash, isValidPassword } from "../utils.js";
-import { userService } from "../dao/index.js";
+import { UsersService } from "../services/users.services.js";
 import githubStratregy from "passport-github2";
 import LocalStrategy from "passport-local";
 import { config } from "./config.js";
+
+const userService = UsersService;
 
 export const initializePassport = () =>{
     passport.use("githubLoginStrategy", new githubStratregy(

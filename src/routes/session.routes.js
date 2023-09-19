@@ -1,43 +1,27 @@
-import { Router, application } from "express";
-import { userService } from "../dao/index.js";
-import { createHash, isValidPassword } from "../utils.js";
+import { Router} from "express";
+import { SessionsController } from "../controllers/sessions.controllers.js";
 import passport from "passport";
 
 const router = Router();
 
-router.post("/signup", passport.authenticate("signupStrategy",{
-    failureRedirect: "/api/sessions/fail-signup"
-}), (req, res) => {
-    res.redirect("/products");
-});
+router.get("/fail-signup", SessionsController.failSignup);
 
-router.get("/fail-signup", (req,res)=>{
-    res.render("signup", {error: "No se pudo registrar el usuario"})
-});
+router.get("/fail-login", SessionsController.failLogin);
 
-router.post("/login", passport.authenticate("loginStrategy",{
-    failureRedirect: "/api/sessions/fail-login"
-}), (req, res) => {
-    res.redirect("/products");
-});
-
-router.get("/fail-login", (req,res)=>{
-    res.render("login", {error: "Error al iniciar sesion"})
-});
-
-router.get("/logout", async (req,res)=>{
-    req.session.destroy(error => {
-        if(error) return res.redirect("/products");
-        else return res.redirect("/");
-    });
-});
+router.get("/logout", SessionsController.logout);
 
 router.get("/loginGitHub", passport.authenticate("githubLoginStrategy"));
 
+router.post("/login", passport.authenticate("loginStrategy",{
+    failureRedirect: "/api/sessions/fail-login"
+}), SessionsController.login);
+
 router.get("/github-callback", passport.authenticate("githubLoginStrategy",{
     failureRedirect: "/api/sessions/signup"
-}), (req, res) => {
-    res.redirect("/products");
-});
+}), SessionsController.githubCallback);
+
+router.post("/signup", passport.authenticate("signupStrategy",{
+    failureRedirect: "/api/sessions/fail-signup"
+}), SessionsController.signup);
 
 export {router as sessionRouter};
