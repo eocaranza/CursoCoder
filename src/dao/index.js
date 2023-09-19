@@ -1,4 +1,3 @@
-import {config} from '../config/config.js'
 import {ProductManager} from "../dao/managers/fileSystem/ProductManager.js";
 import { ProductsMongo } from "../dao/managers/mongo/productsMongo.js";
 import {CartManager} from "../dao/managers/fileSystem/CartManager.js";

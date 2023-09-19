@@ -25,11 +25,6 @@ router.post("/signup", passport.authenticate("signupStrategy",{
     failureRedirect: "/api/sessions/fail-signup"
 }), SessionsController.signup);
 
-router.get("/current", async (req,res)=>{
-    if(req.user)
-            res.render("current", {user: req.user.toJSON()});
-        else
-            res.render("current", {error: "No se encuentra loggeado"});
-});
+router.get("/current", SessionsController.current);
 
 export {router as sessionRouter};

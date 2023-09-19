@@ -26,4 +26,11 @@ export class SessionsController{
             else return res.redirect("/");
         });
     }
+
+    static async current(req, res){
+        if(req.user)
+                res.render("current", {user: req.user.toJSON()});
+            else
+                res.render("current", {error: "No se encuentra loggeado"});
+    }
 }
