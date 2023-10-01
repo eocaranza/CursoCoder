@@ -86,9 +86,12 @@ export class CartsMongo{
 
             // quitar el producto en el carrito
             const index = cart.products.findIndex((prod) => prod.product.toString() == idProducto);
-            cart.products.splice(index,1);
+            if(index >= 0)
+                cart.products.splice(index,1);
+            else
+                return "El carrito no contiene ese producto";
             // Guardar el carrito actualizado
-            cart.save();
+            await cart.save();
             return true;
         }catch(error){
             return error.message;

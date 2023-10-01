@@ -10,16 +10,14 @@ const ticketSchema = new mongoose.Schema({
         unique: true
     },
     purchase_datetime:{
-        type: Date,
-        required: true
+        type: Date
     },
     amount:{
         type: Number,
         required: true
     },
     purchaser:{
-        type: String,
-        required: true
+        type: String
     }
 });
 ticketSchema.plugin(mongoosePaginate);

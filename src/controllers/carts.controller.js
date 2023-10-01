@@ -97,30 +97,43 @@ export class CartsController{
         const cartId = req.params.cid;
         const recibido = await CartsService.getCartById(cartId);
         if(recibido){
+
             const dtoInfo = new TicketDto(req.body);
-            let suma = 0;
             let prodId;
             let producto;
-            await recibido.products.forEach(async entrada=>{
-                prodId = entrada.product._id;
+            let purchased = [];
+            let rejected = [];
+            let suma = 0;
+
+            for(let i = 0; i< recibido.products.length; i++){
+                prodId = recibido.products[i].product._id;
                 producto = await ProductsService.getProductById(prodId);
-                console.log(`${producto.stock} ${entrada.quantity}`);
-                if(producto.stock >= entrada.quantity){
-                    suma = suma + 1;
+                if(producto.stock >= recibido.products[i].quantity){
+                    purchased.push(prodId);
+                    producto.stock = producto.stock - recibido.products[i].quantity;
+                    await ProductsService.updateProduct(prodId, producto);
+                    suma += producto.price * recibido.products[i].quantity;
                 }
-            });
+                else
+                    rejected.push(producto._id);
+            }
 
-            const currentDate = new Date();
+            for(let i = 0; i< purchased.length; i++){
+                await CartsService.deleteProduct(cartId,purchased[i].toString());
+            }
 
-            const nuevoTicket = await TicketsService.addTicket({
-                code: uuidv4(),
-                purchase_datetime: currentDate.getDate() + "/" + (currentDate.getMonth()+1)  + "/" + currentDate.getFullYear(),
-                amount: suma,
-                purchaser: "email@email.com" //req.user.email
-            });
-
+            if(suma > 0){
+                const nuevoTicket = await TicketsService.addTicket({
+                    code: uuidv4(),
+                    purchase_datetime: new Date(),
+                    amount: suma,
+                    //purchaser: req.user.email
+                });
+            }
+            if(rejected.length > 0)
+            res.json({status: "success", rejected: rejected});
+                else
             res.json({status: "success", message: "Compra realizada"});
-            console.log(nuevoTicket);
         }
         else
             res.json({status: "error", message: "No existe el carrito"});

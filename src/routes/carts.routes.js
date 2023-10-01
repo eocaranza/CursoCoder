@@ -12,7 +12,7 @@ router.get("/", cartManager.getCarts);
 
 router.get("/:cid", cartManager.getCartById);
 
-router.post("/", checkRole("user"), cartManager.addCart);
+router.post("/"/*, checkRole("user")*/, cartManager.addCart);
 
 router.post("/:cid/product/:pid", checkRole("user"), cartManager.addProduct);
 
