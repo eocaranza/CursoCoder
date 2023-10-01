@@ -1,5 +1,6 @@
 import {Router} from "express";
 import { ProductsController } from "../controllers/products.controller.js";
+import { checkRole } from "../middlewares/auth.js";
 
 const prodManager = ProductsController;
 const router = Router();
@@ -10,10 +11,10 @@ router.get("/", prodManager.getProducts);
 
 router.get("/:pid", prodManager.getProductById);
 
-router.post("/", prodManager.addProduct);
+router.post("/", checkRole("admin"), prodManager.addProduct);
 
-router.put("/:pid", prodManager.updateProduct);
+router.put("/:pid", checkRole("admin"), prodManager.updateProduct);
 
-router.delete("/:pid", prodManager.deleteProduct);
+router.delete("/:pid", checkRole("admin"), prodManager.deleteProduct);
 
 export {router as productsRouter}

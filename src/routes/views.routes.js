@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { checkUserAuthenticated, showLoginView } from "../middlewares/auth.js";
+import { checkRole, checkUserAuthenticated, showLoginView } from "../middlewares/auth.js";
 import { ViewsController } from "../controllers/views.controller.js";
 
 const router = Router();
 
-router.get("/", checkUserAuthenticated, ViewsController.renderHome);
+router.get("/", checkUserAuthenticated, checkRole("user"), ViewsController.renderHome);
 
 router.get("/registro", showLoginView, ViewsController.renderSignup);
 

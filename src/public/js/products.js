@@ -1,7 +1,7 @@
 const addToCart = async (idProducto) => {
     const url = window.location.href.replace(`/${idProducto}`,"").replace("products","") + "api/carts";
     console.log(url);
-    console.log({products: [{_id: idProducto}]});
+    console.log({products: [{product: idProducto}]});
     let response = await fetch(url,{
         method: 'POST',
         headers: {
@@ -12,7 +12,7 @@ const addToCart = async (idProducto) => {
         (
             {
                 "products": [{
-                    "_id": idProducto
+                    "product": idProducto
                 }]
             }
         )

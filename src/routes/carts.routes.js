@@ -1,5 +1,6 @@
 import {Router} from "express";
 import { CartsController } from "../controllers/carts.controller.js";
+import { checkRole } from "../middlewares/auth.js";
 
 const cartManager = CartsController;
 
@@ -11,9 +12,9 @@ router.get("/", cartManager.getCarts);
 
 router.get("/:cid", cartManager.getCartById);
 
-router.post("/", cartManager.addCart);
+router.post("/", checkRole("user"), cartManager.addCart);
 
-router.post("/:cid/product/:pid", cartManager.addProduct);
+router.post("/:cid/product/:pid", checkRole("user"), cartManager.addProduct);
 
 router.delete("/:cid/product/:pid", cartManager.deleteProduct);
 

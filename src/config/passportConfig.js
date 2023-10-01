@@ -24,7 +24,8 @@ export const initializePassport = () =>{
                 const newUser = {
                     first_name: profile.username,
                     email: profile.username,
-                    password: createHash(profile.id)
+                    password: createHash(profile.id),
+                    role: "user"
                 }
                 const userCreated = await userService.save(newUser);
                 return done(null, userCreated);
@@ -51,7 +52,8 @@ export const initializePassport = () =>{
                     const newUser = {
                         first_name: first_name,
                         email: username,
-                        password: createHash(password)
+                        password: createHash(password),
+                        role: (username == "adminCoder@coder.com")? "admin" : "user"
                     }
                     const userCreated = await userService.save(newUser);
                     return done(null, userCreated);
