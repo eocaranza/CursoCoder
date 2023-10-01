@@ -3,10 +3,10 @@
 //import {CartManager} from "./managers/fileSystem/CartManager.js";
 //import { CartsMongo } from "./managers/mongo/cartsMongo.js";
 //import { usersMongo } from './managers/mongo/usersMongo.js';
-import {connectDB} from '../config/dbConnection.js'
+//import {connectDB} from '../config/dbConnection.js'
 import { config } from "../config/config.js";
 
-connectDB();
+//connectDB();
 //const productDao = new ProductsMongo();
 //const cartDao = new CartsMongo();
 //const userDao = new usersMongo();
@@ -20,6 +20,8 @@ const persistence = config.server.persistence;
 
 switch(persistence) {
     case "mongo":
+        const {connectDB} = await import("../config/dbConnection.js");
+        connectDB();
         const {CartsMongo} = await import("./managers/mongo/cartsMongo.js");
         const {ProductsMongo} = await import("./managers/mongo/productsMongo.js");
         const {usersMongo} = await import("./managers/mongo/usersMongo.js");

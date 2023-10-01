@@ -14,4 +14,6 @@ router.get("/carts/:cid", ViewsController.renderCartById);
 
 router.get("/products", checkUserAuthenticated, ViewsController.renderProducts);
 
+router.get("/products/:pid", checkUserAuthenticated, ViewsController.renderProductById);
+
 export {router as viewsRouter};

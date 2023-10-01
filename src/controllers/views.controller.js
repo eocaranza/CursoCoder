@@ -85,10 +85,11 @@ export class ViewsController{
                 prevLink: result.hasPrevPage ? `${pLink}` : null,
                 nextLink: result.hasNextPage ? `${nLink}` : null
             };
+
             if(req.session?.userInfo)
-                res.render("products", {required: required, user: req.session.userInfo});
+                res.render("products", {required: required, user: req.session.userInfo.toJSON()});
             else
-                res.render("products", {required: required, user: req.user});
+                res.render("products", {required: required, user: req.user.toJSON()});
         } catch (error) {
             console.log(error);
             res.render("products",{error: "Error al cargar la vista"});
