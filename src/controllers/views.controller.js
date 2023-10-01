@@ -1,5 +1,6 @@
 import { CartsService } from "../services/carts.services.js";
 import { ProductsService } from "../services/products.services.js";
+import { UserDto } from "../dao/dto/user.dto.js";
 
 export class ViewsController{
     static async renderHome(req, res){
@@ -86,10 +87,16 @@ export class ViewsController{
                 nextLink: result.hasNextPage ? `${nLink}` : null
             };
 
-            if(req.session?.userInfo)
-                res.render("products", {required: required, user: req.session.userInfo.toJSON()});
-            else
-                res.render("products", {required: required, user: req.user.toJSON()});
+            let dtoInfo;
+
+            if(req.session?.userInfo){
+                dtoInfo = new UserDto(req.session.userInfo);
+                res.render("products", {required: required, user: dtoInfo});
+            }
+            else{
+                dtoInfo = new UserDto(req.user);
+                res.render("products", {required: required, user: dtoInfo});
+            }
         } catch (error) {
             console.log(error);
             res.render("products",{error: "Error al cargar la vista"});

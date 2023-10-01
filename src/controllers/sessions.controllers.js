@@ -1,3 +1,5 @@
+import { UserDto } from "../dao/dto/user.dto.js";
+
 export class SessionsController{
 
     static async signup(req, res){
@@ -28,9 +30,12 @@ export class SessionsController{
     }
 
     static async current(req, res){
-        if(req.user)
-                res.render("current", {user: req.user.toJSON()});
-            else
-                res.render("current", {error: "No se encuentra loggeado"});
+        if(req.user){
+            const userData = req.user;
+            const dtoInfo = new UserDto(userData);    
+            res.render("current", {user: dtoInfo});
+        }
+        else
+            res.render("current", {error: "No se encuentra loggeado"});
     }
 }

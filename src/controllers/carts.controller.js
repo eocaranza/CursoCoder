@@ -1,4 +1,5 @@
 import { CartsService } from "../services/carts.services.js";
+import { CartDto } from "../dao/dto/cart.dto.js";
 
 export class CartsController{
 
@@ -26,7 +27,8 @@ export class CartsController{
     }
 
     static async addCart(req, res){
-        const recibido = await CartsService.addCart(req.body);
+        const dtoInfo = new CartDto(req.body);
+        const recibido = await CartsService.addCart(dtoInfo);
         if(recibido._id)
             res.json({status: "success", message: recibido});
         else
@@ -64,7 +66,8 @@ export class CartsController{
 
     static async editCart(req, res){
         const cartId = req.params.cid;
-        const recibido = await CartsService.editCart(cartId, req.body);
+        const dtoInfo = new CartDto(req.body);
+        const recibido = await CartsService.editCart(cartId, dtoInfo);
         if(recibido)
             res.json({status: "success", message: "Carrito actualizado"});
         else
@@ -74,7 +77,8 @@ export class CartsController{
     static async editQuantity(req, res){
         const cartId = req.params.cid;
         const prodId = req.params.pid;
-        const recibido = await CartsService.editQuantity(cartId, prodId, req.body);
+        const dtoInfo = new CartDto(req.body);
+        const recibido = await CartsService.editQuantity(cartId, prodId, dtoInfo);
         if(recibido)
             res.json({status: "success", message: "Carrito actualizado"});
         else

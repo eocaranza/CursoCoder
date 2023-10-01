@@ -1,4 +1,5 @@
 import { ProductsService } from "../services/products.services.js";
+import { ProductDto } from "../dao/dto/product.dto.js";
 
 export class ProductsController{
     static async getProducts(req, res){
@@ -26,7 +27,8 @@ export class ProductsController{
 
     static async addProduct(req, res){
         {
-            const recibidos = await ProductsService.addProduct(req.body);
+            const dtoInfo = new ProductDto(req.body);
+            const recibidos = await ProductsService.addProduct(dtoInfo);
             if(recibidos === true)
                 res.json({status: "success", message: "Producto agregado"});
             else
@@ -37,7 +39,8 @@ export class ProductsController{
     static async updateProduct(req, res){
         {
             const productId = req.params.pid;
-            const recibidos = await ProductsService.updateProduct(productId,req.body);
+            const dtoInfo = new ProductDto(req.body);
+            const recibidos = await ProductsService.updateProduct(productId,dtoInfo);
             if(recibidos === true)
                 res.json({status: "success", message: "Producto modificado"});
             else
