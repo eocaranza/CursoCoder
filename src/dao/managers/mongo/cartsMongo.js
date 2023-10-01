@@ -58,8 +58,8 @@ export class CartsMongo{
                 return "No existe el producto"
 
             // Buscar si el producto ya está en el carrito
-            const existingProduct = cart.products.find(prod => prod.product === idProducto);
-            
+            const existingProduct = cart.products.find(prod => prod.product.toString() === idProducto);
+
             if (existingProduct) {
                 existingProduct.quantity++; // Incrementar la cantidad
             } else {

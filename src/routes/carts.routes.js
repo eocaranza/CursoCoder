@@ -23,4 +23,8 @@ router.put("/:cid/", cartManager.editCart);
 
 router.put("/:cid/product/:pid", cartManager.editQuantity);
 
+router.post("/:cid/purchase", cartManager.purchase);
+
+router.get("/tickets/all", cartManager.getTickets);
+
 export {router as cartsRouter}

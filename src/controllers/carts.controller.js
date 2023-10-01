@@ -1,5 +1,9 @@
 import { CartsService } from "../services/carts.services.js";
+import { ProductsService } from "../services/products.services.js";
+import { TicketsService } from "../services/tickets.service.js";
 import { CartDto } from "../dao/dto/cart.dto.js";
+import { TicketDto } from "../dao/dto/ticket.dto.js";
+import {v4 as uuidv4} from 'uuid';
 
 export class CartsController{
 
@@ -77,11 +81,48 @@ export class CartsController{
     static async editQuantity(req, res){
         const cartId = req.params.cid;
         const prodId = req.params.pid;
-        const dtoInfo = new CartDto(req.body);
-        const recibido = await CartsService.editQuantity(cartId, prodId, dtoInfo);
+        const recibido = await CartsService.editQuantity(cartId, prodId, req.body);
         if(recibido)
             res.json({status: "success", message: "Carrito actualizado"});
         else
             res.json({status: "error", message: recibido});
+    }
+
+    static async getTickets(req, res){
+        const recibidos = await TicketsService.getTickets();
+        res.json({status: "success", data: recibidos});
+    }
+
+    static async purchase(req, res){
+        const cartId = req.params.cid;
+        const recibido = await CartsService.getCartById(cartId);
+        if(recibido){
+            const dtoInfo = new TicketDto(req.body);
+            let suma = 0;
+            let prodId;
+            let producto;
+            await recibido.products.forEach(async entrada=>{
+                prodId = entrada.product._id;
+                producto = await ProductsService.getProductById(prodId);
+                console.log(`${producto.stock} ${entrada.quantity}`);
+                if(producto.stock >= entrada.quantity){
+                    suma = suma + 1;
+                }
+            });
+
+            const currentDate = new Date();
+
+            const nuevoTicket = await TicketsService.addTicket({
+                code: uuidv4(),
+                purchase_datetime: currentDate.getDate() + "/" + (currentDate.getMonth()+1)  + "/" + currentDate.getFullYear(),
+                amount: suma,
+                purchaser: "email@email.com" //req.user.email
+            });
+
+            res.json({status: "success", message: "Compra realizada"});
+            console.log(nuevoTicket);
+        }
+        else
+            res.json({status: "error", message: "No existe el carrito"});
     }
 }

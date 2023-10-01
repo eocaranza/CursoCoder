@@ -14,7 +14,7 @@ import { config } from "../config/config.js";
 let productDao;
 let cartDao;
 let userDao;
-
+let ticketDao;
 
 const persistence = config.server.persistence;
 
@@ -25,9 +25,11 @@ switch(persistence) {
         const {CartsMongo} = await import("./managers/mongo/cartsMongo.js");
         const {ProductsMongo} = await import("./managers/mongo/productsMongo.js");
         const {usersMongo} = await import("./managers/mongo/usersMongo.js");
+        const {ticketsMongo} = await import("./managers/mongo/ticketsMongo.js");
         productDao = new ProductsMongo();
         cartDao = new CartsMongo();
         userDao = new usersMongo();
+        ticketDao = new ticketsMongo();
     break;
 
     case "memory":
@@ -41,4 +43,5 @@ switch(persistence) {
 
 export {productDao}
 export {cartDao}
-export {userDao};
+export {userDao}
+export {ticketDao};
