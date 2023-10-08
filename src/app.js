@@ -13,6 +13,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import {initializePassport} from "./config/passportConfig.js";
+import { errorHandler } from "./middlewares/errorHandler.js";
 
 const port = config.server.port;
 //creamos la aplicacion del servidor
@@ -73,3 +74,4 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions",sessionRouter);
 app.use(viewsRouter);
+app.use(errorHandler);

@@ -16,4 +16,6 @@ router.get("/products", checkUserAuthenticated, ViewsController.renderProducts);
 
 router.get("/products/:pid", checkUserAuthenticated, ViewsController.renderProductById);
 
+router.get("/mockingproducts", ViewsController.mocking);
+
 export {router as viewsRouter};

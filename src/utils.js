@@ -27,7 +27,8 @@ export const generateProduct = () =>{
 }
 
 export const generateUser = () => {
-    const numberOfProducts = parseInt(string.numeric(1));
+    //const numberOfProducts = parseInt(string.numeric(1));
+    const numberOfProducts = 100;
 
     let products = [];
 

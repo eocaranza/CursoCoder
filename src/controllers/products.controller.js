@@ -1,5 +1,8 @@
 import { ProductsService } from "../services/products.services.js";
 import { ProductDto } from "../dao/dto/product.dto.js";
+import { CustomError } from "../services/error/customError.services.js";
+import { createProductErrorMsg } from "../services/error/createProductError.services.js";
+import { EError } from "../enums/EError.js";
 
 export class ProductsController{
     static async getProducts(req, res){
@@ -27,12 +30,29 @@ export class ProductsController{
 
     static async addProduct(req, res){
         {
+            const {name, price, stock} = req.body;
+            //console.log(name + price + stock);
+            if(!name || !price || !stock){
+                CustomError.createError({
+                    name: "error addProduct",
+                    cause: createProductErrorMsg(req.body),
+                    message: "Error en los campos de producto",
+                    errorCode: EError.INVALID_JSON
+                });
+            }
+            else{
             const dtoInfo = new ProductDto(req.body);
             const recibidos = await ProductsService.addProduct(dtoInfo);
             if(recibidos === true)
                 res.json({status: "success", message: "Producto agregado"});
             else
-                res.json({status: "error", message: recibidos});
+                CustomError.createError({
+                    name: "error addProduct",
+                    cause: createProductErrorMsg(req.body),
+                    message: "Error al crear producto",
+                    errorCode: EError.DATABASE_ERROR
+                });
+            }
         }
     }
 

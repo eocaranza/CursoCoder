@@ -11,7 +11,7 @@ router.get("/", prodManager.getProducts);
 
 router.get("/:pid", prodManager.getProductById);
 
-router.post("/", checkRole("admin"), prodManager.addProduct);
+router.post("/", /*checkRole("admin"),*/ prodManager.addProduct);
 
 router.put("/:pid", checkRole("admin"), prodManager.updateProduct);
 

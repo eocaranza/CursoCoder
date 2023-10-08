@@ -1,6 +1,7 @@
 import { CartsService } from "../services/carts.services.js";
 import { ProductsService } from "../services/products.services.js";
 import { UserDto } from "../dao/dto/user.dto.js";
+import { generateUser } from "../utils.js";
 
 export class ViewsController{
     static async renderHome(req, res){
@@ -101,5 +102,17 @@ export class ViewsController{
             console.log(error);
             res.render("products",{error: "Error al cargar la vista"});
         }
+    }
+
+    static async mocking(req, res){
+        const cant = parseInt(req.query.cant) || 1;
+        let users = [];
+
+        for(let i=0; i<cant; i++){
+            const user = generateUser();
+            users.push(user);
+        }
+
+        res.json({status: "success", data: users});
     }
 }
