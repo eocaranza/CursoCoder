@@ -64,7 +64,12 @@ export class ProductsController{
             if(recibidos === true)
                 res.json({status: "success", message: "Producto modificado"});
             else
-                res.json({status: "error", message: recibidos});
+            CustomError.createError({
+                name: "error updateProduct",
+                cause: createProductErrorMsg(req.body),
+                message: "Error al actualizar producto",
+                errorCode: EError.DATABASE_ERROR
+            });
         }
     }
 
@@ -74,6 +79,11 @@ export class ProductsController{
         if(recibidos === true)
             res.json({status: "success", message: "Producto eliminado"});
         else
-            res.json({status: "error", message: recibidos});
+        CustomError.createError({
+            name: "error deleteProduct",
+            cause: createProductErrorMsg(req.body),
+            message: "Error al borrar producto",
+            errorCode: EError.DATABASE_ERROR
+        });
     }
 }

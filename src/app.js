@@ -35,9 +35,6 @@ app.use(session({
     saveUninitialized: true
 }));
 
-//levantar el servidor
-const httpServer = app.listen(port,()=>console.log(`El servidor esta escuchando en el puerto ${port}`));
-
 //configuracion de handlebars
 app.engine('.hbs', engine({extname: '.hbs'}));
 app.set('view engine', '.hbs');
@@ -47,6 +44,15 @@ app.set('views', path.join(__dirname, "/views"));
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.use("/api/products", productsRouter);
+app.use("/api/carts", cartsRouter);
+app.use("/api/sessions",sessionRouter);
+app.use(viewsRouter);
+app.use(errorHandler);
+
+//levantar el servidor
+const httpServer = app.listen(port,()=>console.log(`El servidor esta escuchando en el puerto ${port}`));
 
 //crear server websocket
 const socketServer = new Server(httpServer);
@@ -69,9 +75,3 @@ socketServer.on("connection",(socket)=>{
         socketServer.emit("messageHistory", messages);
     })
 });
-
-app.use("/api/products", productsRouter);
-app.use("/api/carts", cartsRouter);
-app.use("/api/sessions",sessionRouter);
-app.use(viewsRouter);
-app.use(errorHandler);
