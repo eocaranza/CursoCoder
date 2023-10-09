@@ -15,5 +15,5 @@ export const errorHandler = (error, req, res, next) =>{
             res.status(500).send({status: "error", error: "error desconocido"});
             break;
     }
-    next(error);
+    //next(error);
 };
