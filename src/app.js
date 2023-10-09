@@ -54,6 +54,11 @@ app.use(errorHandler);
 //levantar el servidor
 const httpServer = app.listen(port,()=>console.log(`El servidor esta escuchando en el puerto ${port}`));
 
+app.on('error', (error) => {
+
+    console.error('Error en el servidor:', error);
+});
+
 //crear server websocket
 const socketServer = new Server(httpServer);
 
