@@ -14,6 +14,9 @@ import MongoStore from "connect-mongo";
 import passport from "passport";
 import {initializePassport} from "./config/passportConfig.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
+import { addLogger } from "./helpers/logger.js";
+
+const logger = addLogger();
 
 const port = config.server.port;
 //creamos la aplicacion del servidor
@@ -52,10 +55,10 @@ app.use(viewsRouter);
 app.use(errorHandler);
 
 //levantar el servidor
-const httpServer = app.listen(port,()=>console.log(`El servidor esta escuchando en el puerto ${port}`));
+const httpServer = app.listen(port,()=>logger.info(`El servidor esta escuchando en el puerto ${port}`));
 
 app.on("error", (error) => {
-    console.error('Error en el servidor:', error);
+    logger.error('Error en el servidor:', error);
 });
 
 //crear server websocket
@@ -63,7 +66,7 @@ const socketServer = new Server(httpServer);
 
 //socket server
 socketServer.on("connection",(socket)=>{
-    console.log("Nuevo cliente conectado");
+    logger.info("Nuevo cliente conectado");
     
     socket.on("authenticated", async (msg)=>{
         const messages = await chatModel.find();
@@ -73,7 +76,7 @@ socketServer.on("connection",(socket)=>{
 
     //recibir el mensaje del cliente
     socket.on("message", async (data)=>{
-        console.log("data",data);
+        logger.info("data",data);
         const messageCreated = await chatModel.create(data);
         const messages = await chatModel.find();
         socketServer.emit("messageHistory", messages);

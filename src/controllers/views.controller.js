@@ -2,6 +2,9 @@ import { CartsService } from "../services/carts.services.js";
 import { ProductsService } from "../services/products.services.js";
 import { UserDto } from "../dao/dto/user.dto.js";
 import { generateUser } from "../utils.js";
+import { addLogger } from "../helpers/logger.js";
+
+const logger = addLogger();
 
 export class ViewsController{
     static async renderHome(req, res){
@@ -99,7 +102,7 @@ export class ViewsController{
                 res.render("products", {required: required, user: dtoInfo});
             }
         } catch (error) {
-            console.log(error);
+            logger.error(error);
             res.render("products",{error: "Error al cargar la vista"});
         }
     }
@@ -114,5 +117,14 @@ export class ViewsController{
         }
 
         res.json({status: "success", data: users});
+    }
+
+    static async logger(req, res){
+        logger.debug("Aviso nivel debug");
+        logger.http("Aviso nivel http");
+        logger.info("Aviso nivel info");
+        logger.warning("Aviso nivel warning");
+        logger.error("Aviso nivel error");
+        logger.fatal("Aviso nivel fatal");
     }
 }

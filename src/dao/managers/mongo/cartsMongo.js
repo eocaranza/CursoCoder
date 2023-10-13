@@ -1,6 +1,9 @@
 import { cartsModel } from "../../models/carts.model.js";
 import { productsModel } from "../../models/products.model.js";
 import { productsCollection } from "../../../constants/index.js";
+import { addLogger } from "../../../helpers/logger.js";
+
+const logger = addLogger();
 
 export class CartsMongo{
     constructor(){
@@ -14,7 +17,7 @@ export class CartsMongo{
             const carts = await this.model.find().populate('products.product');
             return carts;
         }catch(error){
-            console.log(error.message);
+            logger.error(error.message);
             throw new Error("Error al obtener los carritos");
         }
     }
@@ -42,7 +45,7 @@ export class CartsMongo{
             const cart = await this.model.findById(id).populate('products.product').lean();
             return cart;
         }catch(error){
-            console.log(error.message);
+            logger.error(error.message);
             throw new Error("Error al obtener el carrito");
         }
     }
@@ -126,13 +129,13 @@ export class CartsMongo{
 
             if(prodInfo.products){
                 prodInfo.products.forEach(prod =>{
-                    console.log(prod);
+                    logger.info(prod);
                     cart.products.push(prod);
                 });
             }
             else{
                 prodInfo.forEach(prod =>{
-                    console.log(prod);
+                    logger.info(prod);
                     cart.products.push(prod);
                 });
             }

@@ -18,4 +18,6 @@ router.get("/products/:pid", checkUserAuthenticated, ViewsController.renderProdu
 
 router.get("/mockingproducts", ViewsController.mocking);
 
+router.get("/loggerTest", ViewsController.logger)
+
 export {router as viewsRouter};

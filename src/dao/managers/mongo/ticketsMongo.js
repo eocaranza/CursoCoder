@@ -1,4 +1,8 @@
 import { ticketsModel } from "../../models/tickets.model.js";
+import { addLogger } from "../../../helpers/logger.js";
+
+const logger = addLogger();
+
 
 export class ticketsMongo{
     constructor(){
@@ -11,7 +15,7 @@ export class ticketsMongo{
             const tickets = await this.model.find().lean();
             return tickets;
         }catch(error){
-            console.log(error.message);
+            logger.error(error.message);
             throw new Error("Error al obtener los tickets");
         }
     }

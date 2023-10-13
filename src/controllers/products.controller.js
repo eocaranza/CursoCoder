@@ -31,7 +31,6 @@ export class ProductsController{
     static async addProduct(req, res){
         {
             const {name, price, stock} = req.body;
-            //console.log(name + price + stock);
             if(!name || !price || !stock){
                 CustomError.createError({
                     name: "error addProduct",
