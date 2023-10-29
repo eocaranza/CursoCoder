@@ -6,9 +6,9 @@ export const checkUserAuthenticated = (req, res, next) =>{
             res.redirect("/login")
 }
 
-export const checkRole = (role) => {
+export const checkRole = (roles) => {
     return (req, res, next) =>{
-        if(role === req.user.role)
+        if(roles.includes(req.user.role))
             next();
         else
             res.json({status: "error", message: "Permisos insuficientes"})

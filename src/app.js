@@ -9,6 +9,7 @@ import path from 'path';
 import { Server } from "socket.io";
 import { chatModel } from "./dao/models/chat.model.js";
 import { sessionRouter } from "./routes/session.routes.js";
+import { usersRouter } from "./routes/users.routes.js";
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
@@ -51,6 +52,7 @@ app.use(passport.session());
 app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions",sessionRouter);
+app.use("/api/users",usersRouter);
 app.use(viewsRouter);
 app.use(errorHandler);
 

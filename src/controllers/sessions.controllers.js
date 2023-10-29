@@ -1,7 +1,7 @@
 import { UserDto } from "../dao/dto/user.dto.js";
 import { UsersService } from '../services/users.services.js'
 import { generateEmailWithToken, recoveryEmail } from "../helpers/gmail.js";
-import { validateToken, createHash } from "../utils.js";
+import { validateToken, createHash, isValidPassword } from "../utils.js";
 
 export class SessionsController{
 
@@ -68,9 +68,11 @@ export class SessionsController{
                 const user = await UsersService.getUserByEmail(validEmail);
                 
                 if(user){
+                    if(isValidPassword(user, newPassword))
+                        res.send("La contraseña debe ser diferente de la anterior");
                     user.password = createHash(newPassword);
                     await UsersService.updateUser(user._id, user);
-                    res.send("Contraseña actualizada");
+                        res.send("Contraseña actualizada");
                 }
             }
             else{

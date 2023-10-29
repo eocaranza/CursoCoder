@@ -11,10 +11,10 @@ router.get("/", prodManager.getProducts);
 
 router.get("/:pid", prodManager.getProductById);
 
-router.post("/", /*checkRole("admin"),*/ prodManager.addProduct);
+router.post("/", checkRole(["admin", "premium"]), prodManager.addProduct);
 
-router.put("/:pid", checkRole("admin"), prodManager.updateProduct);
+router.put("/:pid", checkRole(["admin", "premium"]), prodManager.updateProduct);
 
-router.delete("/:pid", checkRole("admin"), prodManager.deleteProduct);
+router.delete("/:pid", checkRole(["admin", "premium"]), prodManager.deleteProduct);
 
 export {router as productsRouter}
