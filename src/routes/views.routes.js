@@ -22,4 +22,6 @@ router.get("/loggerTest", ViewsController.logger);
 
 router.get("/forgot-password", ViewsController.renderForgot);
 
+router.get("/reset-password", ViewsController.renderResetPass);
+
 export {router as viewsRouter};

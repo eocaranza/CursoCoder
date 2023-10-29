@@ -131,4 +131,8 @@ export class ViewsController{
     static async renderForgot(req, res){
         res.render("forgotPassword");
     }
+
+    static async renderResetPass(req, res){
+        res.render("resetPassword");
+    }
 }

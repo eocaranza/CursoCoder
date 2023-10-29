@@ -1,9 +1,6 @@
 import { UserDto } from "../dao/dto/user.dto.js";
 import { UsersService } from '../services/users.services.js'
-import { addLogger } from "../helpers/logger.js";
 import { generateEmailWithToken, recoveryEmail } from "../helpers/gmail.js";
-
-const logger = addLogger();
 
 export class SessionsController{
 
@@ -52,10 +49,10 @@ export class SessionsController{
                 return res.json({status: "error", error: "El usuario no existe"});
 
             const token = generateEmailWithToken(email, 3*60)
-            await recoveryEmail(email, token);
+            await recoveryEmail(req, email, token);
             res.send("Correo enviado");
         } catch (error) {
-            logger.info(error.message);
+            console.log(error.message);
         }
     }
 }

@@ -11,7 +11,7 @@ export const generateEmailWithToken = (email, expireTime) => {
     return token;
 };
 
-export const recoveryEmail = async(userEmail, emailToken) =>{
+export const recoveryEmail = async(req, userEmail, emailToken) =>{
     try {
         const domain = `${req.protocol}://${req.get('host')}`;
         const link = `${domain}/reset-password?token=${emailToken}`;
@@ -25,6 +25,6 @@ export const recoveryEmail = async(userEmail, emailToken) =>{
             `
         });
     } catch (error) {
-        logger.info("Aviso nivel info");
+        logger.error(error.message);
     }
 };
