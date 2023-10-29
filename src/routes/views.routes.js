@@ -18,6 +18,8 @@ router.get("/products/:pid", checkUserAuthenticated, ViewsController.renderProdu
 
 router.get("/mockingproducts", ViewsController.mocking);
 
-router.get("/loggerTest", ViewsController.logger)
+router.get("/loggerTest", ViewsController.logger);
+
+router.get("/forgot-password", ViewsController.renderForgot);
 
 export {router as viewsRouter};

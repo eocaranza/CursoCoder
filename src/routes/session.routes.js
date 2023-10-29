@@ -27,4 +27,6 @@ router.post("/signup", passport.authenticate("signupStrategy",{
 
 router.get("/current", SessionsController.current);
 
+router.post("/forgot-password", SessionsController.forgotPassword);
+
 export {router as sessionRouter};

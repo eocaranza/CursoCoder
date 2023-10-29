@@ -15,6 +15,11 @@ export const config = {
         clientId: process.env.GITCLIENT,
         secretId: process.env.GITSECRET,
         callbackUrl: process.env.GITCALLBACK
+    },
+    gmail:{
+        account: process.env.GMAIL_SALES,
+        password: process.env.GMAIL_SALES_PASSWORD,
+        secretToken: process.env.SECRET_TOKEN_EMAIL
     }
 }
 

@@ -32,7 +32,7 @@ export class usersMongo{
             if(user)
                 return user;
             else
-                throw new Error("El usuario no existe.");
+                return null;
         } catch (error) {
             throw error;
         }

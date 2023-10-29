@@ -127,4 +127,8 @@ export class ViewsController{
         logger.error("Aviso nivel error");
         logger.fatal("Aviso nivel fatal");
     }
+
+    static async renderForgot(req, res){
+        res.render("forgotPassword");
+    }
 }
