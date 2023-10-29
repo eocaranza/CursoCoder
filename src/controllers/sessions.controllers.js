@@ -1,6 +1,7 @@
 import { UserDto } from "../dao/dto/user.dto.js";
 import { UsersService } from '../services/users.services.js'
 import { generateEmailWithToken, recoveryEmail } from "../helpers/gmail.js";
+import { validateToken, createHash } from "../utils.js";
 
 export class SessionsController{
 
@@ -48,11 +49,35 @@ export class SessionsController{
             if(!user)
                 return res.json({status: "error", error: "El usuario no existe"});
 
-            const token = generateEmailWithToken(email, 3*60)
+            const token = generateEmailWithToken(email, 3600)
             await recoveryEmail(req, email, token);
             res.send("Correo enviado");
         } catch (error) {
             console.log(error.message);
+        }
+    }
+
+    static async resetPassword(req, res){
+        try {
+            const token = req.query.token;
+            const {newPassword} = req.body;
+            const validEmail = validateToken(token);
+
+            if(validEmail)
+            {
+                const user = await UsersService.getUserByEmail(validEmail);
+                
+                if(user){
+                    user.password = createHash(newPassword);
+                    await UsersService.updateUser(user._id, user);
+                    res.send("Contraseña actualizada");
+                }
+            }
+            else{
+                return res.json({status: "error", error: "El token ya caducó"});
+            }
+        } catch (error) {
+            console.log(error);
         }
     }
 }

@@ -13,4 +13,8 @@ export class UsersService{
     static async save(user){
         return userDao.save(user);
     }
+
+    static updateUser = async(userId, userInfo) => {
+        return userDao.update(userId, userInfo);
+    }
 }

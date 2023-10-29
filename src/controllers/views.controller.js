@@ -133,6 +133,7 @@ export class ViewsController{
     }
 
     static async renderResetPass(req, res){
-        res.render("resetPassword");
+        const token = req.query.token;
+        res.render("resetPassword", {token});
     }
 }

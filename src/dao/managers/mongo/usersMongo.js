@@ -37,4 +37,13 @@ export class usersMongo{
             throw error;
         }
     }
+
+    async update(userId, newuserInfo){
+        try {
+            const userUpdated = await this.model.findByIdAndUpdate(userId, newuserInfo, {new: true});
+            return userUpdated;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
