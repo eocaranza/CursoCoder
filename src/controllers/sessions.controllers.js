@@ -74,7 +74,7 @@ export class SessionsController{
                 }
             }
             else{
-                return res.json({status: "error", error: "El token ya caducó"});
+                return res.send("El token ya caducó, <a href='/forgot-password'>Restablecer contraseña<a/>");
             }
         } catch (error) {
             console.log(error);
