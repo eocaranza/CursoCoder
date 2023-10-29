@@ -41,6 +41,7 @@ export class ProductsController{
             }
             else{
             const dtoInfo = new ProductDto(req.body);
+            dtoInfo.owner = req.user._id;
             const recibidos = await ProductsService.addProduct(dtoInfo);
             if(recibidos === true)
                 res.json({status: "success", message: "Producto agregado"});
@@ -74,15 +75,22 @@ export class ProductsController{
 
     static async deleteProduct(req, res){
         const productId = req.params.pid;
-        const recibidos = await ProductsService.deleteProduct(productId);
-        if(recibidos === true)
-            res.json({status: "success", message: "Producto eliminado"});
+        const producto = await ProductsService.getProductById(productId);
+        
+        if((req.user.role === "premium" && producto.owner.toString() === req.user._id.toString()) || (req.user.role === "admin")){
+            const recibidos = await ProductsService.deleteProduct(productId);
+            if(recibidos === true)
+                res.json({status: "success", message: "Producto eliminado"});
+            else
+            CustomError.createError({
+                name: "error deleteProduct",
+                cause: createProductErrorMsg(req.body),
+                message: "Error al borrar producto",
+                errorCode: EError.DATABASE_ERROR
+            });
+            
+        }
         else
-        CustomError.createError({
-            name: "error deleteProduct",
-            cause: createProductErrorMsg(req.body),
-            message: "Error al borrar producto",
-            errorCode: EError.DATABASE_ERROR
-        });
+            res.json({status:"error", message:"Permisos insuficientes"});
     }
 }

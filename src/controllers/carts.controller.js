@@ -42,11 +42,19 @@ export class CartsController{
     static async addProduct(req, res){
         const cartId = req.params.cid;
         const prodId = req.params.pid;
+
+        const producto = await ProductsService.getProductById(prodId);
+        
+        if((req.user.role === "premium" && producto.owner.toString() === req.user._id.toString())){
+            res.json({status: "error", message: "No puede agregar un producto creado por usted"});
+        }
+        else{
         const recibido = await CartsService.addProduct(cartId,prodId);
         if(recibido === true)
             res.json({status: "success", message: "Producto agregado"});
         else
             res.json({status: "error", message: recibido});
+        }
     }
 
     static async deleteProduct(req, res){
