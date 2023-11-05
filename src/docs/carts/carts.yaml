@@ -126,7 +126,140 @@ paths:
           description: No tienes permisos para acceder a esta ruta
         "500":
           description: Se produjo un error en el servidor
-
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Endpoint para agregar un producto a un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: id del producto
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Se agregó correctamente el producto
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                    message:
+                      type: string
+        "401":
+          description: No tienes permisos para acceder a esta ruta
+        "500":
+          description: Se produjo un error en el servidor
+    put:
+        summary: Endpoint para editar la cantidad de un producto en un carrito
+        tags:
+          - Carts
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: id del carrito
+            schema:
+              type: string
+          - name: pid
+            in: path
+            required: true
+            description: id del producto
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: "#components/requestBodies/UpdateQuantity"
+        responses:
+          "200":
+            description: Se editó correctamente la cantidad
+            content:
+              application/json:
+                schema:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                      message:
+                        type: string
+          "401":
+            description: No tienes permisos para acceder a esta ruta
+          "500":
+            description: Se produjo un error en el servidor
+    delete:
+        summary: Endpoint para borrar un producto de un carrito
+        tags:
+          - Carts
+        parameters:
+          - name: cid
+            in: path
+            required: true
+            description: id del carrito
+            schema:
+              type: string
+          - name: pid
+            in: path
+            required: true
+            description: id del producto
+            schema:
+              type: string
+        responses:
+          "200":
+            description: Se borró correctamente el producto
+            content:
+              application/json:
+                schema:
+                    type: object
+                    properties:
+                      status:
+                        type: string
+                      message:
+                        type: string
+          "401":
+            description: No tienes permisos para acceder a esta ruta
+          "500":
+            description: Se produjo un error en el servidor
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Endpoint para reaizar compra de un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Se realizó correctamente la compra
+          content:
+            application/json:
+              schema:
+                  type: object
+                  properties:
+                    status:
+                      type: string
+                    message:
+                      type: string
+        "401":
+          description: No tienes permisos para acceder a esta ruta
+        "500":
+          description: Se produjo un error en el servidor
 components:
   schemas:
     Cart:
@@ -203,3 +336,11 @@ components:
           -
             product: 64cd71b3916031fb59bcb136
             quantity: 20
+    UpdateQuantity:
+      type: object
+      properties:
+        quantity:
+          type: number
+          description: Cantidad del producto
+      example:
+        quantity: 20
