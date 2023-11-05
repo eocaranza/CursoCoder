@@ -1,4 +1,4 @@
-import swaggerJSDoc from "swagger-jsdoc";
+import swaggerJsDoc from "swagger-jsdoc";
 import path from 'path';
 import {__dirname} from '../utils.js';
 

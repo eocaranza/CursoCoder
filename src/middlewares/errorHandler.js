@@ -13,6 +13,7 @@ export const errorHandler = (error, req, res, next) =>{
             break;
         default:
             res.status(500).send({status: "error", error: "error desconocido"});
+            //res.status(500).send({status: "error", error: error.message});
             break;
     }
     //next(error);
