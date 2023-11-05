@@ -16,6 +16,8 @@ import passport from "passport";
 import {initializePassport} from "./config/passportConfig.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
 import { addLogger } from "./helpers/logger.js";
+import { swaggerSpecs } from "./config/swagger.config.js";
+import swaggerUI from 'swagger-ui-express';
 
 const logger = addLogger();
 
@@ -53,6 +55,7 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 app.use("/api/sessions",sessionRouter);
 app.use("/api/users",usersRouter);
+app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(swaggerSpecs));
 app.use(viewsRouter);
 app.use(errorHandler);
 
