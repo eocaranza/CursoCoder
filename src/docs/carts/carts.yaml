@@ -138,19 +138,24 @@ components:
         products:
           type: array
           description: Arreglo de productos
-          properties:
-            items:
-              - product:
-                - type: ObjectId
-                - description: Id del producto
-              - quantity:
-                - type: number
-                - description: Cantidad del producto
+          items:
+            type: object
+            properties:
+              product:
+                type: ObjectId
+                description: Id del producto
+              quantity:
+                type: number
+                description: Cantidad del producto
       example:
         _id: 6519b8b9d62cb1fe1fd0bbab
         products:
-          product: 64cd727a84df1b2f204e225e
-          quantity: 15
+          -
+            product: 64cd727a84df1b2f204e225e
+            quantity: 15
+          -
+            product: 64cd71b3916031fb59bcb136
+            quantity: 20
   requestBodies:
     CreateCart:
       type: object
@@ -158,8 +163,9 @@ components:
         products:
           type: array
           description: Arreglo de productos
-          properties:
-            items:
+          items:
+            type: object
+            properties:
               product:
                 type: ObjectId
                 description: Id del producto
@@ -168,16 +174,21 @@ components:
                 description: Cantidad del producto
       example:
         products:
-          product: 64cd727a84df1b2f204e225e
-          quantity: 15
-    UpdateProduct:
+          -
+            product: 64cd727a84df1b2f204e225e
+            quantity: 15
+          -
+            product: 64cd71b3916031fb59bcb136
+            quantity: 20
+    UpdateCart:
       type: object
       properties:
         products:
           type: array
           description: Arreglo de productos
-          properties:
-            items:
+          items:
+            type: object
+            properties:
               product:
                 type: ObjectId
                 description: Id del producto
@@ -186,5 +197,9 @@ components:
                 description: Cantidad del producto
       example:
         products:
-          product: 64cd727a84df1b2f204e225e
-          quantity: 15
+          -
+            product: 64cd727a84df1b2f204e225e
+            quantity: 15
+          -
+            product: 64cd71b3916031fb59bcb136
+            quantity: 20
