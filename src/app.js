@@ -87,3 +87,5 @@ socketServer.on("connection",(socket)=>{
         socketServer.emit("messageHistory", messages);
     })
 });
+
+export {app}
