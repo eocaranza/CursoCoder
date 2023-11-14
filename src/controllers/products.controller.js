@@ -41,7 +41,7 @@ export class ProductsController{
             }
             else{
             const dtoInfo = new ProductDto(req.body);
-            dtoInfo.owner = req.user._id;
+            //dtoInfo.owner = req.user._id;
             const recibidos = await ProductsService.addProduct(dtoInfo);
             if(recibidos === true)
                 res.json({status: "success", message: "Producto agregado"});

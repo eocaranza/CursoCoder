@@ -2,6 +2,8 @@ import {app} from '../src/app.js';
 import supertest from 'supertest';
 import chai from 'chai';
 import { productsModel } from "../src/dao/models/products.model.js";
+import { usersModel } from '../src/dao/models/users.model.js';
+import { cartsModel } from '../src/dao/models/carts.model.js';
 
 const expect = chai.expect;
 const requester = supertest(app); //Elemento para hacer peticiones
@@ -11,6 +13,8 @@ describe("Test de ecommerce",async function(){
 
     before(async function(){
         await usersModel.deleteMany({});
+        await productsModel.deleteMany({});
+        await cartsModel.deleteMany({});
     });
 
     describe("Test de session", async function(){
@@ -22,10 +26,7 @@ describe("Test de ecommerce",async function(){
                 "email": "test@test.com",
                 "password": "1234"
             };
-            const response = await this.userManager.save(mockUser);
-            
-            // Verifico que el objeto tenga cierta propiedad
-            expect(response).to.have.property('_id');
+            const response = await requester.post("/api/sessions/signup").send(mockUser);
         });
 
         it("El endpoint POST de /api/sessions/login nos permite logguearnos", async function(){
@@ -39,10 +40,6 @@ describe("Test de ecommerce",async function(){
     
     describe("Test de productos",async function(){
 
-        beforeEach(async function(){
-            await productsModel.deleteMany({});
-        });
-
         it("El endpoint POST de /api/products nos permite crear un producto", async function(){
             const mockProduct = {
                 "name" : "Laundromatic",
@@ -52,7 +49,25 @@ describe("Test de ecommerce",async function(){
                 "stock": 846
             };
             const response = await requester.post("/api/products").send(mockProduct);
-            console.log(response.body.payload);
+        });
+    });
+
+    describe("Test de carritos",async function(){
+
+        it("El endpoint POST de /api/carts nos permite crear un carrito a partir de un producto", async function(){
+
+            const products = await requester.get("/api/products");
+            const mockCart = {
+                "products":[
+                    {
+                        "product": products.body.data[0]._id,
+                        "quantity": 15
+                    }
+                ]
+            };
+            const response = await requester.post("/api/carts").send(mockCart);
+            const carts = await requester.get("/api/carts");
+            //console.log(carts.body.data[0]);
         });
     });
 });
