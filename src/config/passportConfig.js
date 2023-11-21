@@ -25,11 +25,13 @@ export const initializePassport = () =>{
                     first_name: profile.username,
                     email: profile.username,
                     password: createHash(profile.id),
-                    role: "user"
+                    role: "user",
+                    last_connection: newDate()
                 }
                 const userCreated = await userService.save(newUser);
                 return done(null, userCreated);
             } else{
+                user.last_connection = newDate();
                 return done(null, user);
             }
         } catch (error) {
@@ -81,6 +83,7 @@ export const initializePassport = () =>{
                 const rol = (username == "adminCoder@coder.com")? "admin" : "user";
 
                 if(isValidPassword(user, password) || (password == "adminCod3r123" && rol == "admin")){
+                    user.last_connection = newDate();
                     return done(null, user);
                 }
                 else{
