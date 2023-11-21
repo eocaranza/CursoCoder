@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import {faker, Faker, es ,en} from '@faker-js/faker';
 import jwt from 'jsonwebtoken';
 import { config } from "./config/config.js";
+import multer from 'multer';
 
 export const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -16,6 +17,17 @@ export const isValidPassword = (userDB, password) => {
 }
 
 const {database, commerce, string, person, internet} = faker;
+
+const storageFiles = multer.diskStorage({
+    destination: function(req, file, cb){
+        cb(null, path.join(__dirname, "/public/documents"));
+    },
+    filename: function(req, file, cb){
+        cb(null, Date.now() + "-" + file.originalname);
+    }
+});
+
+export const uploader = multer({storage: storageFiles});
 
 export const generateProduct = () =>{
     return {

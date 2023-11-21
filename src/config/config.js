@@ -9,8 +9,8 @@ export const config = {
         persistence: process.env.PERSISTENCE
     },
     mongo:{
-        //url: process.env.MONGO_URL
-        url: process.env.MONGO_URL_TEST
+        url: process.env.MONGO_URL
+        //url: process.env.MONGO_URL_TEST
     },
     github:{
         clientId: process.env.GITCLIENT,

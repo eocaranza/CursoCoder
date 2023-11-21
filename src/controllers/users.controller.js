@@ -8,14 +8,18 @@ export class UsersController{
             const user = await UsersService.getUserById(userId);
             const userRole = user.role;
 
+            //const reference = req.file.path;
+
             let uploaded = false;
             let names = [];
 
             for (let i = 0; i < user.documents.length; i++) {
                 names.push(user.documents[i].name);
             }
-
-            uploaded = "Identificacion" in names && "Comprobante de domicilio" in names && "Comprobante de estado de cuenta" in names;
+            
+            uploaded = names.includes('Identificacion') &&
+                        names.includes('Comprobante de domicilio') &&
+                        names.includes('Comprobante de estado de cuenta');
 
             if(userRole === "user")
                 if(uploaded)
@@ -47,7 +51,8 @@ export class UsersController{
             });
 
             await UsersService.updateUser(userId, user);
-            
+
+            return res.json({status: "success", message: "Se ha subido la documentación"});
         } catch (error) {
             console.log(error.message);
         }
