@@ -43,3 +43,18 @@ export const deleteProductEmail = async(req, userEmail, emailToken) =>{
         logger.error(error.message);
     }
 };
+
+export const inactivityEmail = async(req, userEmail, emailToken) =>{
+    try {
+        await gmailTransporter.sendMail({
+            from: "Ecommerce Coder",
+            to: userEmail,
+            subject: "Usuario eliminado",
+            html: `
+                <p> Le informamos que su usuario fue eliminado por inactividad</p>
+            `
+        });
+    } catch (error) {
+        logger.error(error.message);
+    }
+};

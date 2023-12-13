@@ -1,4 +1,5 @@
 import { UsersService } from "../services/users.services.js";
+import { generateEmailWithToken, inactivityEmail } from "../helpers/gmail.js";
 
 export class UsersController{
     
@@ -71,8 +72,11 @@ export class UsersController{
         var difference;
         users.forEach(async (user) => {
             difference = parseInt((currentdate.getTime() - new Date(user.last_connection).getTime())/(1000 * 60 * 60 * 24));
-            if(difference > 2)
+            if(difference > 2){
                 await UsersService.deleteUser(user._id);
+                const token = generateEmailWithToken(email, 3600)
+                await inactivityEmail(req, email, token);
+            }
             
         });
         res.json({status: "success", message: "Se borraron usuarios inactivos"});
