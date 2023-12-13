@@ -24,4 +24,6 @@ router.get("/forgot-password", ViewsController.renderForgot);
 
 router.get("/reset-password", ViewsController.renderResetPass);
 
+router.get("/userManager", checkUserAuthenticated, checkRole("admin"), ViewsController.renderUserManager);
+
 export {router as viewsRouter};

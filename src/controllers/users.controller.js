@@ -75,6 +75,6 @@ export class UsersController{
                 await UsersService.deleteUser(user._id);
             
         });
-        res.json({status: "success", data: users});
+        res.json({status: "success", message: "Se borraron usuarios inactivos"});
     };
 }

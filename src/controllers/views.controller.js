@@ -1,4 +1,5 @@
 import { CartsService } from "../services/carts.services.js";
+import { UsersService } from "../services/users.services.js";
 import { ProductsService } from "../services/products.services.js";
 import { UserDto } from "../dao/dto/user.dto.js";
 import { generateUser } from "../utils.js";
@@ -135,5 +136,10 @@ export class ViewsController{
     static async renderResetPass(req, res){
         const token = req.query.token;
         res.render("resetPassword", {token});
+    }
+
+    static async renderUserManager(req, res){
+        const required = await UsersService.getAllUsers();
+        res.render("userManager", {required : required});
     }
 }
