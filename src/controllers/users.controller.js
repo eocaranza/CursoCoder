@@ -74,6 +74,7 @@ export class UsersController{
             difference = parseInt((currentdate.getTime() - new Date(user.last_connection).getTime())/(1000 * 60 * 60 * 24));
             if(difference > 2){
                 await UsersService.deleteUser(user._id);
+                const email = user.email;
                 const token = generateEmailWithToken(email, 3600)
                 await inactivityEmail(req, email, token);
             }
