@@ -18,6 +18,14 @@ export class UsersService{
         return userDao.update(userId, userInfo);
     }
 
+    static deleteUser = async(userId) => {
+        return userDao.delete(userId);
+    }
+
+    static async getAllUsersLimited(){
+        return userDao.getAllUsersLimited();
+    }
+
     static async getAllUsers(){
         return userDao.getAllUsers();
     }

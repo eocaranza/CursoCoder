@@ -7,6 +7,8 @@ const router = Router();
 
 router.get("/", UsersController.getAllUsers);
 
+router.delete("/", UsersController.deleteInactive);
+
 router.post("/premium/:uid", checkRole(["admin"]), UsersController.modifyRole);
 
 router.post("/:uid/documents", uploader.single("reference"), UsersController.uploadFiles);

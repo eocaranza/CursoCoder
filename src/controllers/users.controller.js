@@ -60,7 +60,21 @@ export class UsersController{
     };
 
     static getAllUsers = async(req, res) =>{
+        const users = await UsersService.getAllUsersLimited();
+        //const users = await UsersService.getAllUsers();
+        res.json({status: "success", data: users});
+    };
+
+    static deleteInactive = async(req, res) => {
         const users = await UsersService.getAllUsers();
+        var currentdate = new Date();
+        var difference;
+        users.forEach(async (user) => {
+            difference = parseInt((currentdate.getTime() - new Date(user.last_connection).getTime())/(1000 * 60 * 60 * 24));
+            if(difference > 2)
+                await UsersService.deleteUser(user._id);
+            
+        });
         res.json({status: "success", data: users});
     };
 }

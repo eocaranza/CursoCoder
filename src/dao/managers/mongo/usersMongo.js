@@ -49,8 +49,26 @@ export class usersMongo{
 
     async getAllUsers(){
         try {
+            const users = await this.model.find().lean();
+            return users;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getAllUsersLimited(){
+        try {
             const users = await this.model.find({},{first_name: 1, email: 1, role: 1, _id: 0}).lean();
             return users;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async delete(userId){
+        try {
+            await this.model.deleteOne({_id: userId});
+            return true;
         } catch (error) {
             throw error;
         }
