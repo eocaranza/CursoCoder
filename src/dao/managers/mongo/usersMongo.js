@@ -46,4 +46,13 @@ export class usersMongo{
             throw error;
         }
     }
+
+    async getAllUsers(){
+        try {
+            const users = await this.model.find({},{first_name: 1, email: 1, role: 1, _id: 0}).lean();
+            return users;
+        } catch (error) {
+            throw error;
+        }
+    }
 }

@@ -58,4 +58,9 @@ export class UsersController{
             console.log(error.message);
         }
     };
+
+    static getAllUsers = async(req, res) =>{
+        const users = await UsersService.getAllUsers();
+        res.json({status: "success", data: users});
+    };
 }
