@@ -87,8 +87,10 @@ export class ProductsController{
             const recibidos = await ProductsService.deleteProduct(productId);
             
             if(recibidos === true){
-                const token = generateEmailWithToken(email, 3600)
-                await deleteProductEmail(req, email, token);
+                if(owner.role === "premium"){
+                    const token = generateEmailWithToken(email, 3600)
+                    await deleteProductEmail(req, email, token);
+                }
                 res.json({status: "success", message: "Producto eliminado"});
             }
             else
