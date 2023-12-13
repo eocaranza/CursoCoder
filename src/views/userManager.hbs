@@ -9,6 +9,7 @@
         <li><a> Correo: {{this.email}}</a></li>
         <li><a> Rol: {{this.role}}</a></li>
         <button onclick="modifyRole('{{this._id}}')">Cambiar rol</button>
+        <button onclick="deleteUser('{{this._id}}')">Eliminar</button>
     {{/each}}
     </ul>
 {{else}}

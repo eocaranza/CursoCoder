@@ -77,4 +77,10 @@ export class UsersController{
         });
         res.json({status: "success", message: "Se borraron usuarios inactivos"});
     };
+
+    static deleteUser = async(req, res) => {
+        const userId = req.params.uid;
+        await UsersService.deleteUser(userId);
+        res.json({status: "success", message: "Se borró con éxito el usuario"});
+    };
 }
