@@ -28,3 +28,18 @@ export const recoveryEmail = async(req, userEmail, emailToken) =>{
         logger.error(error.message);
     }
 };
+
+export const deleteProductEmail = async(req, userEmail, emailToken) =>{
+    try {
+        await gmailTransporter.sendMail({
+            from: "Ecommerce Coder",
+            to: userEmail,
+            subject: "Producto eliminado",
+            html: `
+                <p> Le informamos que uno de sus productos fue eliminado de nuestro ecommerce</p>
+            `
+        });
+    } catch (error) {
+        logger.error(error.message);
+    }
+};

@@ -1,8 +1,10 @@
 import { ProductsService } from "../services/products.services.js";
+import { UsersService } from "../services/users.services.js";
 import { ProductDto } from "../dao/dto/product.dto.js";
 import { CustomError } from "../services/error/customError.services.js";
 import { createProductErrorMsg } from "../services/error/createProductError.services.js";
 import { EError } from "../enums/EError.js";
+import { generateEmailWithToken, deleteProductEmail } from "../helpers/gmail.js";
 
 export class ProductsController{
     static async getProducts(req, res){
@@ -78,9 +80,17 @@ export class ProductsController{
         const producto = await ProductsService.getProductById(productId);
         
         if((req.user.role === "premium" && producto.owner.toString() === req.user._id.toString()) || (req.user.role === "admin")){
+
+            const owner = await UsersService.getUserById(producto.owner.toString());
+            const email = owner.email;
+
             const recibidos = await ProductsService.deleteProduct(productId);
-            if(recibidos === true)
+            
+            if(recibidos === true){
+                const token = generateEmailWithToken(email, 3600)
+                await deleteProductEmail(req, email, token);
                 res.json({status: "success", message: "Producto eliminado"});
+            }
             else
             CustomError.createError({
                 name: "error deleteProduct",
@@ -88,7 +98,6 @@ export class ProductsController{
                 message: "Error al borrar producto",
                 errorCode: EError.DATABASE_ERROR
             });
-            
         }
         else
             res.json({status:"error", message:"Permisos insuficientes"});
